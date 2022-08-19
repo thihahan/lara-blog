@@ -18,9 +18,10 @@ class CreatePostsTable extends Migration
             $table->string("title");
             $table->string("slug");
             $table->longText("description");
-            $table->string("excerpt");
+            $table->longText("excerpt");
             $table->foreignId("category_id")->constrained()->cascadeOnDelete();
             $table->foreignId("user_id")->constrained()->cascadeOnDelete();
+            $table->string("feature_image")->nullable();
             $table->timestamps();
         });
     }
