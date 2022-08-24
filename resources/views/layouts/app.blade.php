@@ -10,7 +10,7 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
+    <script src="{{ asset('js/app.js') }}"></script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -76,8 +76,29 @@
         </nav>
 
         <main class="py-4">
-            @yield('content')
+            @auth()
+            <div class="container">
+                <div class="row">
+                    <div class="col-3">
+                        @include("layouts.slidebar")
+                    </div>
+                    <div class="col-9">
+                        @yield("content")
+                    </div>
+                </div>
+            </div>
+            @endauth
+            @guest()
+                @yield('content')
+                @endguest
         </main>
     </div>
+@stack("script")
+
+        @if(session("status"))
+            <script>
+                window.showToast("{{session("status")}}")
+            </script>
+            @endif
 </body>
 </html>
