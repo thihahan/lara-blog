@@ -76,7 +76,7 @@
         </nav>
 
         <main class="py-4">
-            @auth()
+            @auth
             <div class="container">
                 <div class="row">
                     <div class="col-3">
@@ -88,8 +88,10 @@
                 </div>
             </div>
             @endauth
-            @guest()
-                @yield('content')
+            @guest
+                <div class="container">
+                    @yield('content')
+                </div>
                 @endguest
         </main>
     </div>

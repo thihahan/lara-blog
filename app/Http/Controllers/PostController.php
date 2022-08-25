@@ -10,11 +10,19 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 class PostController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware("auth");
+    }
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
+
+
     public function index()
     {
         $posts = Post::when(request("keyword"), function($q){
