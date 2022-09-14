@@ -10,6 +10,12 @@ class CategoryPolicy
 {
     use HandlesAuthorization;
 
+    public function before(User $user){
+        if($user->role == "admin" || $user->role == "editor"){
+            return true;
+        };
+    }
+
     /**
      * Determine whether the user can view any models.
      *
@@ -53,7 +59,7 @@ class CategoryPolicy
      */
     public function update(User $user, Category $category)
     {
-        //
+        return $user->id == $category->user_id;
     }
 
     /**
@@ -65,7 +71,7 @@ class CategoryPolicy
      */
     public function delete(User $user, Category $category)
     {
-        //
+        return $user->id == $category->user_id;
     }
 
     /**

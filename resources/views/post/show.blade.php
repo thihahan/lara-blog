@@ -13,11 +13,17 @@
             <img src="{{asset("storage/".$post->feature_image)}}" class="card-img-top" alt="...">
             @endif
         <div class="card-body">
-            <h4 class="card-title">{{$post->title}} <span class="badge bg-secondary text-end">{{\App\Models\Category::find($post->category_id)->title}}</span></h4>
-            <p class="card-text">{{$post->description}}</p>
+            <h4 class="card-title">{{$post->title}} <span class="badge bg-secondary text-end">{{$post->category->title}}</span></h4>
+            <p class="card-text">{{$post->description}}
+            </p>
+            <div class="d-flex mb-3">
+                @foreach($post->photos as $photo)
+                    <img src="{{asset("storage/".$photo->name)}}" alt="" height="100" class="mx-2">
+                @endforeach
+            </div>
             <div class="d-flex justify-content-between">
                 <div>
-                     <h3 class="">{{\App\Models\User::find($post->user_id)->name}}</h3>
+                     <h3 class="">{{$post->user->name}}</h3>
                 </div>
                 <div>
                     <p class="mb-0">{{$post->created_at->format("d.m.Y")}}</p>

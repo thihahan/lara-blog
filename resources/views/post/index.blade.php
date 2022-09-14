@@ -23,8 +23,11 @@
                 <th scope="col">#</th>
                 <th scope="col">Title</th>
                 <td scope="col">Category</td>
+                @if(Auth::user()->role != "author")
+
                 <td scope="col">Owner</td>
-                <th scope="col">Control</th>
+                @endcan
+                <th scope="col" class="">Control</th>
                 <th scope="col">Date</th>
             </tr>
             </thead>
@@ -34,17 +37,22 @@
                 <tr>
                     <td>{{$post->id}}</td>
                     <td class="w-25">{{$post->title}}</td>
-                    <td>{{\App\Models\Category::find($post->category_id)->title}}</td>
-                    <td>{{\App\Models\User::find($post->user_id)->name}}</td>
-                    <td>
+                    <td>{{$post->category->title}}</td>
+                    @if(Auth::user()->role != "author")
+                    <td>{{$post->user->name}}</td>
+                    @endif
+                    <td class="">
+                        @can("update", $post)
                         <a href="{{route("post.edit", $post->id)}}"><i class="bi btn btn-sm btn-dark bi-pencil"></i></a>
+                        @endcan
                         <a href="{{route("post.show", $post->id)}}"><i class="bi btn btn-sm btn-dark bi-info-circle"></i></a>
-
+                        @can("delete", $post)
                         <form action="{{route("post.destroy", $post->id)}}" method="post" class="d-inline-block">
                             @csrf
                             @method("delete")
                             <button class="btn btn-sm btn-dark"><i class="bi bi-trash"></i></button>
                         </form>
+                            @endcan
                     </td>
                     <td>
                         <p class="mb-0">{{$post->created_at->format("d.m.Y")}}</p>

@@ -35,7 +35,19 @@
                 </select>
             </div>
 
-
+                <div class="mb-3">
+                    <label for="post_images" class="form-label">Post photos</label>
+                    <input type="file" id="post_images"
+                           class="form-control @error("photos") is-invalid @enderror @error("photos.*") is-invalid @enderror"
+                           name="photos[]" multiple
+                    >
+                    @error("photos")
+                    <div class="invalid-feedback">{{$message}}</div>
+                    @enderror
+                    @error("photos.*")
+                    <div class="invalid-feedback">{{$message}}</div>
+                    @enderror
+                </div>
             <div class="mb-3">
                 {{--                post description--}}
                 <label for="description" class="form-label">Post Description</label>

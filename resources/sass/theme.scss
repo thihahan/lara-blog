@@ -1,0 +1,10 @@
+@import "bwvariables";
+@import "~bootstrap/scss/bootstrap";
+@import "~venobox/dist/venobox.css";
+@import "bootswatch";
+
+.detail-img{
+    height: 300px;
+    weight: 300px;
+    object-fit: contain;
+}

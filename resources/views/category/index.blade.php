@@ -16,6 +16,10 @@
             <tr>
                 <th scope="col">#</th>
                 <th scope="col">Title</th>
+                @NotAuthor
+                <th scope="col">Owner</th>
+                @endNotAuthor
+                <th scope="col">Page Count</th>
                 <th scope="col">Control</th>
                 <th scope="col">Date</th>
             </tr>
@@ -26,13 +30,21 @@
                 <tr>
                     <td>{{$category->id}}</td>
                     <td>{{$category->title}}</td>
+                    @NotAuthor
+                    <td>{{$category->user->name}}</td>
+                    @endNotAuthor
+                    <td>{{$category->posts()->count()}}</td>
                     <td>
+                        @can("update", $category)
                         <a href="{{route("category.edit", $category->id)}}"><i class="bi btn btn-sm btn-dark bi-pencil"></i></a>
+                        @endcan
+                        @can("delete", $category)
                         <form action="{{route("category.destroy", $category->id)}}" method="post" class="d-inline-block">
                             @csrf
                             @method("delete")
                             <button class="btn btn-sm btn-dark"><i class="bi bi-trash"></i></button>
                         </form>
+                            @endcan
                     </td>
                     <td>
                         <p class="mb-0">{{$category->created_at->format("d.m.Y")}}</p>

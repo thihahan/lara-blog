@@ -8,7 +8,7 @@ use App\Http\Requests\UpdateCategoryRequest;
 use App\Models\Category;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
-
+use Illuminate\Support\Facades\Gate;
 class CategoryController extends Controller
 {
 
@@ -24,7 +24,11 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = Category::latest("id")->get();
+        $categories = Category::latest("id")
+            ->when((Auth::user()->isAuthor()), function($q) {
+                $q->where("user_id", Auth::id());
+            })->with(['user'])
+            ->get();
         return view("category.index", compact("categories"));
     }
 
@@ -62,6 +66,7 @@ class CategoryController extends Controller
      */
     public function show(Category $category)
     {
+        return $category->post;
         return abort(404);
     }
 
@@ -73,6 +78,7 @@ class CategoryController extends Controller
      */
     public function edit(Category $category)
     {
+        Gate::authorize("update", $category);
         return view("category.edit", compact("category"));
     }
 
@@ -85,6 +91,7 @@ class CategoryController extends Controller
      */
     public function update(UpdateCategoryRequest $request, Category $category)
     {
+        GAte::authorize("update", $category);
         $category->title = $request->title;
         $category->slug = Str::slug($request->title);
         $category->update();
@@ -99,6 +106,7 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
+        Gate::authorize("delete", $category);
         $category->delete();
         return redirect()->route("category.index")->with("status", "category deleted successfully");
     }
